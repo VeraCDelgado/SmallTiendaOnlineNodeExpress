@@ -1,0 +1,26 @@
+{
+    "name": "back-end_tiendaonline_nodeexpress",
+    "version": "1.0.0",
+    "description": "Pequeña practica de una sencilla tienda en linea",
+    "main": "app.js",
+    "scripts": {
+        "start": "nodemon src/app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/VeraCDelgado/SmallTiendaOnlineNodeExpress.git"
+    },
+    "author": "Veracode",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/VeraCDelgado/SmallTiendaOnlineNodeExpress/issues"
+    },
+    "homepage": "https://github.com/VeraCDelgado/SmallTiendaOnlineNodeExpress#readme",
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    },
+    "dependencies": {
+        "express": "^4.17.2",
+        "morgan": "^1.10.0"
+    }
+}
