@@ -1,13 +1,20 @@
 const { Router } = require('express');
+//middleware
+const { getProduct } = require('../middlewares/products');
+
 const {
     getProducts,
-    createProducts,
+    getOneProduct,
+    createProduct,
     deleteProduct,
-    updateProduct
+    updateProduct,
+
 } = require('../controllers/productsController');
 const router = Router();
-router.route('/').get(getProducts).post(createProducts);
-router.route('/:id').delete(deleteProduct).put(updateProduct);
+
+// router.use('/:id',getProduct );
+router.route('/').get(getProducts).post(createProduct);
+router.route('/:id').all(getProduct).delete(deleteProduct).patch(updateProduct).get(getOneProduct);
 
 
 

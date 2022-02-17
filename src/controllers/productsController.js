@@ -1,59 +1,65 @@
-const { products } = require('../data');
-const { productExists, dataExists } = require('../helpers/products');
+const Product = require('../models/products');
+const { getProduct } = require('../middlewares/products');
 
-const getProducts = (req, res) => {
 
-    console.log(products);
-    res.status(200).json({ success: true, data: products });
+const getProducts = async(req, res) => {
+
+    try {
+        const products = await Product.find();
+        res.status(200).json({ success: true, data: products });
+    } catch (err) {
+        res.status(500).json({ success: false, msg: err.message });
+
+    }
 };
-//corregir el error con la propiedad id
-const createProducts = (req, res) => {
-    const id = products.length + 1;
+const getOneProduct = (req, res) => {
+    res.json({ success: true, data: res.product });
 
-    if (dataExists(req)) {
-
-        const newProduct = { id, ...req.body };
-        products.push(newProduct);
-        return res.status(200).json({ success: true, data: products });
-    }
-    return res.status(500).json({ success: false, msg: 'No se pudo insertar el nuevo producto ' });
 }
 
-const deleteProduct = (req, res) => {
-    const { id } = req.params;
-    if (!productExists(id)) {
-        return res.status(404).json({ success: false, msg: `No existe producto con id ${id}` });
+const createProduct = async(req, res) => {
+
+    const product = new Product({...req.body });
+
+    try {
+        const newProduct = await product.save();
+        return res.status(201).json({ success: true, data: newProduct });
+    } catch (err) {
+        return res.status(400).json({ success: false, msg: err.message });
     }
-    const productsUpdated = products.filter((product) => product.id !== Number(id));
-    return res.status(200).json({ success: true, data: productsUpdated });
 }
 
-const updateProduct = (req, res) => {
-    const { id } = req.params;
+const deleteProduct = async(req, res) => {
+    try {
+        await res.product.remove();
+        res.status(200).json({ success: true, msg: 'Deleted product' })
 
-    if (!productExists(id)) {
-        return res.status(200).json({ success: false, msg: `Product id ${id} does not exist` });
-
-    } else if (dataExists(req)) {
-        products.map((product) => {
-            if (product.id === Number(id)) {
-                product.name = req.body.name;
-                product.description = req.body.description;
-                product.price = req.body.price;
-                product.image = req.body.image;
-                product.stock = req.body.stock;
-
-                return res.status(200).json({ success: true, data: products });
-
-            }
-        })
+    } catch (err) {
+        res.status(404).json({ success: false, msg: 'product does not exist' });
     }
+}
+
+const updateProduct = async(req, res) => {
+
+    if (res.product.name !== null) {
+        res.product.name = req.body.name;
+    }
+    try {
+        const updatedProduct = await res.product.save();
+        res.status(200).json({ success: true, data: updatedProduct });
+
+    } catch (err) {
+        res.status(400).json({ success: false, msg: err.message })
+    }
+
 }
 
 
 module.exports = {
     getProducts,
-    createProducts,
+    getOneProduct,
+    createProduct,
     deleteProduct,
-    updateProduct
+    updateProduct,
+
 };
