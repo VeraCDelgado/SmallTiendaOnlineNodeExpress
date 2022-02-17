@@ -12,7 +12,7 @@ const {
 } = require('../controllers/productsController');
 const router = Router();
 
-// router.use('/:id',getProduct );
+
 router.route('/').get(getProducts).post(createProduct);
 router.route('/:id').all(getProduct).delete(deleteProduct).patch(updateProduct).get(getOneProduct);
 

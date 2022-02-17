@@ -1,6 +1,4 @@
 const Product = require('../models/products');
-const { getProduct } = require('../middlewares/products');
-
 
 const getProducts = async(req, res) => {
 
@@ -15,8 +13,7 @@ const getProducts = async(req, res) => {
 const getOneProduct = (req, res) => {
     res.json({ success: true, data: res.product });
 
-}
-
+};
 const createProduct = async(req, res) => {
 
     const product = new Product({...req.body });
@@ -27,7 +24,7 @@ const createProduct = async(req, res) => {
     } catch (err) {
         return res.status(400).json({ success: false, msg: err.message });
     }
-}
+};
 
 const deleteProduct = async(req, res) => {
     try {
@@ -37,7 +34,7 @@ const deleteProduct = async(req, res) => {
     } catch (err) {
         res.status(404).json({ success: false, msg: 'product does not exist' });
     }
-}
+};
 
 const updateProduct = async(req, res) => {
 
@@ -52,7 +49,7 @@ const updateProduct = async(req, res) => {
         res.status(400).json({ success: false, msg: err.message })
     }
 
-}
+};
 
 
 module.exports = {
